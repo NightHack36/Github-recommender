@@ -85,7 +85,7 @@ def form_contributors_res(request):
 def lang_topic_list():
     lang_list=list(GithubRepos.objects.all().values('languages'))
     topic_list=list(GithubRepos.objects.all().values('topics'))
-    print(lang_list)
+    #print(lang_list)
     size=len(topic_list)
     print(size)
     token_list=[]
@@ -137,8 +137,14 @@ def user_rec(request):
         print(df.head())
         dictionary,tfidf,index,lsi=fit(df['all_repos'])
         #print(cosine_sim)
-        user_list=user_recs(dictionary,tfidf,index,lsi,desc)
+        user_list,user_expert=user_recs(dictionary,tfidf,index,lsi,desc)
         #print(user_list[0])
+
+        print(user_expert[0])
+
+
+        
+
 
         context={
             "user_list":user_list
@@ -181,9 +187,23 @@ def org_recs(request):
     user_orgs=orgs_recs_user(dictionary,tfidf,index,lsi,desc)
     print(user_orgs)
 
+    org_desc=["a"]*len(user_orgs)
+
+    for i in range(len(user_orgs)):
+        org=user_orgs[i]
+        org_url="https://api.github.com/orgs/"+org
+        org_det=requests.get(org_url).json()
+        org_desc[i]=([org,org_det['avatar_url'],org_det['public_repos'],org_url])
+
+    print(org_desc)
+
+    
+    
+
+
 
     context={
-        'user_orgs':user_orgs
+        'user_orgs':org_desc
     }
 
 
