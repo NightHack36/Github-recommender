@@ -31,3 +31,11 @@ For Organisation recommendation we used user-user collaborative filtering model.
 For this we created user profile based on their activity and work done in past. Then we calculated cosine simalirity among all profiles and finally recommended those organisation where similar users are part of it.
 
 
+Technologies Stack
+Web framework: Django
+Database: PostgreSQL
+Backend : Django
+Frontend: HTML/CSS/JS
+Deployed on Heroku
+
+
