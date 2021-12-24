@@ -32,10 +32,10 @@ For this we created user profile based on their activity and work done in past. 
 
 
 Technologies Stack
-Web framework: Django
-Database: PostgreSQL
-Backend : Django
-Frontend: HTML/CSS/JS
-Deployed on Heroku
+1) Web framework: Django
+2) Database: PostgreSQL
+3) Backend : Django
+4) Frontend: HTML/CSS/JS
+5) Deployed on Heroku
 
 
