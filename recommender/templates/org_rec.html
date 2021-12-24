@@ -113,7 +113,7 @@
 {%block content%}
 <h3 style='text-align: center;font-family:Poppins;'>Organisation recommendation</h3>
 
-
+{%if request.user.is_authenticated %}
 <div class='row-section card-deck'>
     {%for  org in user_orgs%}
     
@@ -138,4 +138,9 @@
     {%endfor%}
     
 </div>
+{%else%}
+<h4 style='text-align: center;'>You are not authenticated.Please login for getting personalised organisation recommendation
+    <a href="{% url 'social:begin' 'github' %}">Login Here</a>
+</h4>
+{%endif%}
 {%endblock%}

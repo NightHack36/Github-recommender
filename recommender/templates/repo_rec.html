@@ -1,12 +1,13 @@
 {%extends 'base.html'%}
 {%load static%}
 {%block headtag%}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <title>Homepage</title>
 <style>
     .row-section{
         display: flex;
         justify-content: center;
-       
+        
         flex-wrap: wrap;
         padding-top:20px
     }
@@ -117,46 +118,20 @@
 {%block content%}
 <h3 style='text-align: center;font-family:Poppins;'>Project repository recommendation</h3>
 <div class='row-section'>
-  <div>
-    <i>Sort by</i>
-    <i style='margin-right: 20px;margin-left:10px' class='fa fa-sort'></i>
-</div>
-    <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Stars
-        <span class="caret"></span></button>
-        <ul class="dropdown-menu">
-          <li><a href="#">HTML</a></li>
-          <li><a href="#">CSS</a></li>
-          <li><a href="#">JavaScript</a></li>
-        </ul>
-      </div>
-      <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Open issues
-        <span class="caret"></span></button>
-        <ul class="dropdown-menu">
-          <li><a href="#">HTML</a></li>
-          <li><a href="#">CSS</a></li>
-          <li><a href="#">JavaScript</a></li>
-        </ul>
-      </div>
-      <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Views
-        <span class="caret"></span></button>
-        <ul class="dropdown-menu">
-          <li><a href="#">HTML</a></li>
-          <li><a href="#">CSS</a></li>
-          <li><a href="#">JavaScript</a></li>
-        </ul>
-      </div>
-      <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Forks
-        <span class="caret"></span></button>
-        <ul class="dropdown-menu">
-          <li><a href="#">HTML</a></li>
-          <li><a href="#">CSS</a></li>
-          <li><a href="#">JavaScript</a></li>
-        </ul>
-      </div>
+  
+    <!--<div class="dropdown">
+        <select id='sorting' class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Sort--
+        <span class="caret"></span>
+        
+          <option>Stars</option>
+          <option>Open issues</option>
+          <option>Views</option>
+          <option>Forks</option>
+        
+      </select>
+        
+      </div>-->
+      
 </div>
 
 
@@ -165,9 +140,9 @@
         
         
           {% for repo in repo_list %}
-          <div class="card " >
+          <div class="card" >
             <div class="card-body">
-              <h5 class="card-title"><a href={{repo.2}}></a>{{ repo.0 }}</h5>
+              <h5 class="card-title"><a href={{repo.2}}>{{ repo.0 }}</a></h5>
               <h6 class="card-subtitle mb-2 text-muted">By {{repo.1}}</h6>
               <h6 style='font-size:12px;' class="card-subtitle mb-2 text-muted">created at {{repo.4}}</h6>
               <p class="card-text">{{repo.11}}</p>
@@ -194,10 +169,36 @@
 
         {%endfor%}
 
+        <div >
+          <p id="repos" type='hidden' >
+            {{repo_list}}
+          </p>
+        </div>
+
         
         
     </div>
     
     
+  
+    <script>
+      $("#sorting").on('change',function(){
+        alert("hello")
+        var sortid=$("#sorting").val();
+        var repo_list=$("#repos").html();
+
+        console.log(repo_list)
+
+        
+        $.ajax({
+          type:"POST",
+          url:'/repo',
+          data:{'sortid':sortid, 'csrfmiddlewaretoken': "{{csrf_token}}",'repo_list':repo_list}
+        }).done(function(data){
+          $("#repo").html(data.repo_list)
+        });
+      });
+    </script>
 
 {%endblock%}
+

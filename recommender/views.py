@@ -41,11 +41,17 @@ def index(request):
     return render(request,'index.html')
 
 def repo_rec(request):
+    
 
     if request.method=='POST':
         print('hello')
         data=request.POST.get('data')
         desc=request.POST.get('desc')
+        
+
+    
+            
+        
 
         for word in data:
             desc+=word
@@ -58,17 +64,25 @@ def repo_rec(request):
         dictionary,tfidf,index,lsi=fit_repos(df['content'])
         #print(cosine_sim)
         repo_list=recommendations(dictionary,tfidf,index,lsi,desc)
-        print(repo_list[0][9])
+        #print(repo_list[0][9])
+
+
 
         context={
-            "repo_list":repo_list
+           "repo_list":repo_list
         }
+    
+        return render(request,'repo_rec.html',context)
 
 
 
     #list_repo=model.recommendations("sample code for several design patterns in PHP 8 ['code-examples', 'design-pattern', 'design-patterns', 'designpatternsphp', 'hacktoberfest', 'modern-php', 'oop', 'php', 'php8', 'phpunit'] dict_keys(['PHP', 'Python', 'Makefile', 'Dockerfile'])")
     #print(list_repo)
-    return render(request,'repo_rec.html',context)
+    
+    
+    
+    return render(request,"repo_rec.html")
+    
 
 def form_contributors_res(request):
 
@@ -152,8 +166,7 @@ def user_rec(request):
 
 
 
-    #list_repo=model.recommendations("sample code for several design patterns in PHP 8 ['code-examples', 'design-pattern', 'design-patterns', 'designpatternsphp', 'hacktoberfest', 'modern-php', 'oop', 'php', 'php8', 'phpunit'] dict_keys(['PHP', 'Python', 'Makefile', 'Dockerfile'])")
-    #print(list_repo)
+   
     
     return render(request,'user_rec.html',context)
 
@@ -164,51 +177,53 @@ def logout_view(request):
 
 
 def org_recs(request):
-    owner=request.user.username
-    print(owner)
-    repos=requests.get('https://api.github.com/search/repositories?q=user:'+owner+'+sort:stars').json()
-    print(repos)
-    repo_det=" "
-    for repo in repos['items']:
-      repo_name = str(repo['name'])
-      language = str(repo['language'] )
-      topic=str(repo['topics'])
-      #repo_info = requests.get('https://api.github.com/repos/'+owner+'/'+repo_name)
-      
-      desc=str(repo['description'])
-      repo_det+=repo_name+" "+language+" "+desc+" "+topic+" "
+    if(request.user.is_authenticated):
+        owner=request.user.username
+        print(owner)
+        repos=requests.get('https://api.github.com/search/repositories?q=user:'+owner+'+sort:stars').json()
+        print(repos)
+        repo_det=" "
+        for repo in repos['items']:
+            repo_name = str(repo['name'])
+            language = str(repo['language'] )
+            topic=str(repo['topics'])
+            #repo_info = requests.get('https://api.github.com/repos/'+owner+'/'+repo_name)
+            
+            desc=str(repo['description'])
+            repo_det+=repo_name+" "+language+" "+desc+" "+topic+" "
 
-    #print(repo_det)
+        #print(repo_det)
+            
+        df=pd.DataFrame((list(GithubUsers.objects.all().values())))
+        print(df.head())
+        dictionary,tfidf,index,lsi=fit(df['all_repos'])
+        #print(cosine_sim)
+        user_orgs=orgs_recs_user(dictionary,tfidf,index,lsi,desc)
+        print(user_orgs)
+
+        org_desc=["a"]*len(user_orgs)
+
+        for i in range(len(user_orgs)):
+            org=user_orgs[i]
+            org_url="https://github.com/"+org
+            org_det=requests.get("https://api.github.com/orgs/"+org).json()
+            org_desc[i]=([org,org_det['avatar_url'],org_det['public_repos'],org_url])
+
+        print(org_desc)
+
         
-    df=pd.DataFrame((list(GithubUsers.objects.all().values())))
-    print(df.head())
-    dictionary,tfidf,index,lsi=fit(df['all_repos'])
-    #print(cosine_sim)
-    user_orgs=orgs_recs_user(dictionary,tfidf,index,lsi,desc)
-    print(user_orgs)
-
-    org_desc=["a"]*len(user_orgs)
-
-    for i in range(len(user_orgs)):
-        org=user_orgs[i]
-        org_url="https://api.github.com/orgs/"+org
-        org_det=requests.get(org_url).json()
-        org_desc[i]=([org,org_det['avatar_url'],org_det['public_repos'],org_url])
-
-    print(org_desc)
-
-    
-    
+        
 
 
 
-    context={
-        'user_orgs':org_desc
-    }
+        context={
+            'user_orgs':org_desc
+        }
 
 
 
-    
+        
 
 
-    return render(request,'org_rec.html',context)
+        return render(request,'org_rec.html',context)
+    return render(request,'org_rec.html')
