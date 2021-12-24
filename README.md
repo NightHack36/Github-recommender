@@ -15,3 +15,13 @@ Therefore we came with this end-to-end solution for a GitHub recommendation syst
 It provides personalized recommendations to both the project owners and the contributors alike by
 leveraging various AI/ML tools for its purpose.
 
+We have three features on our website :
+1) Find projects 
+2) Find Contributors
+3) Find Organisation
+
+Project and Contributors recommendation use Context-Based recommendation model .For project recommendation it creates a corpus of description of all 900 repositories which are used to train the model .
+Corpus is created using Bag of words concept and then tf-idf is appliend on bag of words to find out the importance of each term in the context.
+After that Latent Semantic Indexing is applied to dentify patterns in the relationships between the terms and concepts contained in a corpus. Finally similarity between the user requirement and database repos is calculated using cosine similarity. 
+
+
