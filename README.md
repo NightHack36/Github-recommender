@@ -26,7 +26,8 @@ For project recommendation it creates a corpus of description of all 900 reposit
 Corpus is created using Bag of words concept and then tf-idf is appliend on bag of words to find out the importance of each term in the context.
 After that Latent Semantic Indexing is applied to dentify patterns in the relationships between the terms and concepts contained in a corpus. Finally similarity between the user requirement and database repos is calculated using cosine similarity. 
 
-For Organisation recommendation we used user-user collaborative filtering.
+For Organisation recommendation we used user-user collaborative filtering model.
+
 For this we created user profile based on their activity and work done in past. Then we calculated cosine simalirity among all profiles and finally recommended those organisation where similar users are part of it.
 
 
