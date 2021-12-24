@@ -56,6 +56,11 @@ For this we created user profile based on their activity and work done in past. 
 4. Install all the requirements required to run the project : 
     
     ```pip install -r requirements.txt```
+5. Go inside Github-Recommender folder:
+       ```cd Github-Recommender```
+6.  Run the django server
+        ```python manage.py runserver```
+
 
 
 
