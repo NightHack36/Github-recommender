@@ -37,5 +37,6 @@ Technologies Stack
 3) Backend : Django
 4) Frontend: HTML/CSS/JS
 5) Deployed on Heroku
+6) Github API for collecting data
 
 
