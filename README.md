@@ -31,6 +31,26 @@ For Organisation recommendation we used user-user collaborative filtering model.
 For this we created user profile based on their activity and work done in past. Then we calculated cosine simalirity among all profiles and finally recommended those organisation where similar users are part of it.
 
 
+
+## How to run 
+1. Clone the repo to your local system
+
+    ```git clone https://github.com/manan2110/MedGuide.git ```
+2. Create a virtual environment. You can use this [link](https://docs.python.org/3/library/venv.html) for reference.
+
+    ``` python -m venv myvenv ```
+3. Activate your virtual environment using : 
+    
+    ```myvenv/Scripts/activate``` 
+    
+    Here venv is the name of virtual environment.
+
+4. Install all the requirements required to run the project : 
+    
+    ```pip install -r requirements.txt```
+
+
+
 Technologies Stack
 1) Web framework: Django
 2) Database: PostgreSQL
